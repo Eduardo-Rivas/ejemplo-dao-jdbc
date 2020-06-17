@@ -2,7 +2,7 @@ package model.entidades;
 
 import java.io.Serializable;
 
-public class Departamentos implements Serializable{
+public class Categorias implements Serializable{
 	//--Definimos Nro. de Version Padron Serializable --//
 	private static final long serialVersionUID = 1L;
 	
@@ -11,10 +11,10 @@ public class Departamentos implements Serializable{
 	private String nombre;
 
 	//--Definimos constructor Padron--//
-	public Departamentos() {
+	public Categorias() {
 	}
 	//--Definimos constructor con Argumentos--//
-	public Departamentos(Integer id, String nombre) {
+	public Categorias(Integer id, String nombre) {
 		this.id = id;
 		this.nombre = nombre;
 	}
@@ -49,7 +49,7 @@ public class Departamentos implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Departamentos other = (Departamentos) obj;
+		Categorias other = (Categorias) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -63,9 +63,5 @@ public class Departamentos implements Serializable{
 	public String toString() {
 		return "Departamentos :" + id + " - Nombre :" + nombre;
 	}
-
-	
-	
-	
 	
 }
