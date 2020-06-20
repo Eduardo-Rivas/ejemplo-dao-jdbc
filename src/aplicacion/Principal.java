@@ -4,19 +4,18 @@ package aplicacion;
 import java.util.Date;
 
 import model.dao.FabricaDao;
-import model.dao.VendedoresDao;
-import model.entidades.Categorias;
+import model.dao.IntrfVenDao;
+import model.entidades.Departamento;
 import model.entidades.Vendedores;
 
 public class Principal {
 
 	public static void main(String[] args) {
-       Categorias dep = new Categorias(1, "Zapateria");
-       Vendedores ven = new Vendedores(21, "Bob", "bob@gmail.com", new Date(), 7000.0, dep);
        
        //--Instanciamos la Interfase--//
-       VendedoresDao vendedoresDao = FabricaDao.crearVendedoresDao();
-       
+       IntrfVenDao interfvendao = FabricaDao.crearVendedoresDao();
+        
+       Vendedores ven = interfvendao.buscarPorId(1);
        System.out.println(ven);
  
 	}

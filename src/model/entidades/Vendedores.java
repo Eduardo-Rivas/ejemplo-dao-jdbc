@@ -15,19 +15,19 @@ public class Vendedores implements Serializable{
 	private Double SalarioBase;
 
 	// --Composicion de los Objs.--//
-	private Categorias depart;
+	private Departamento dep;
 
 	// --Costructor Padron--//
 	public Vendedores() {
 	}
 	// --Costructor con Argumentos--//
-	public Vendedores(Integer id, String nombre, String email, Date fecha, Double salarioBase, Categorias depart) {
+	public Vendedores(Integer id, String nombre, String email, Date fecha, Double salarioBase, Departamento depart) {
 		this.id = id;
 		this.nombre = nombre;
 		this.email = email;
 		this.fecha = fecha;
 		SalarioBase = salarioBase;
-		this.depart = depart;
+		this.dep = dep;
 	}
 	
 	//--Getters y Setters--//
@@ -61,11 +61,11 @@ public class Vendedores implements Serializable{
 	public void setSalarioBase(Double salarioBase) {
 		SalarioBase = salarioBase;
 	}
-	public Categorias getDepart() {
-		return depart;
+	public Departamento getDepart() {
+		return dep;
 	}
-	public void setDepart(Categorias depart) {
-		this.depart = depart;
+	public void setDepart(Departamento dep) {
+		this.dep = dep;
 	}
 	
 	//--hashCode e Equals--//
@@ -97,6 +97,6 @@ public class Vendedores implements Serializable{
 	@Override
 	public String toString() {
 		return "Vendedores [id=" + id + ", nombre=" + nombre + ", email=" + email + ", fecha=" + fecha
-				+ ", SalarioBase=" + SalarioBase + ", depart=" + depart + "]";
+				+ ", SalarioBase=" + SalarioBase + ", depto=" + dep + "]";
 	}
 }

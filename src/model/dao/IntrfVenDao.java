@@ -3,7 +3,7 @@ package model.dao;
 import java.util.List;
 import model.entidades.Vendedores;
 
-public interface VendedoresDao {
+public interface IntrfVenDao {
 	
 	//--Definimos los Metodos a Sobre Escribir--//
 	void incluir(Vendedores obj);

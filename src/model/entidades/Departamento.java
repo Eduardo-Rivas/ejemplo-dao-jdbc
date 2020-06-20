@@ -2,7 +2,7 @@ package model.entidades;
 
 import java.io.Serializable;
 
-public class Categorias implements Serializable{
+public class Departamento implements Serializable{
 	//--Definimos Nro. de Version Padron Serializable --//
 	private static final long serialVersionUID = 1L;
 	
@@ -11,10 +11,10 @@ public class Categorias implements Serializable{
 	private String nombre;
 
 	//--Definimos constructor Padron--//
-	public Categorias() {
+	public Departamento() {
 	}
 	//--Definimos constructor con Argumentos--//
-	public Categorias(Integer id, String nombre) {
+	public Departamento(Integer id, String nombre) {
 		this.id = id;
 		this.nombre = nombre;
 	}
@@ -23,7 +23,7 @@ public class Categorias implements Serializable{
 	public Integer getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setNro(Integer id) {
 		this.id = id;
 	}
 	public String getNombre() {
@@ -49,7 +49,7 @@ public class Categorias implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categorias other = (Categorias) obj;
+		Departamento other = (Departamento) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
