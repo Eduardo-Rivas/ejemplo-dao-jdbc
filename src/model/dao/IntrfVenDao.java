@@ -1,6 +1,8 @@
 package model.dao;
 
 import java.util.List;
+
+import model.entidades.Departamento;
 import model.entidades.Vendedores;
 
 public interface IntrfVenDao {
@@ -9,7 +11,15 @@ public interface IntrfVenDao {
 	void incluir(Vendedores obj);
 	void midificar(Vendedores obj);
 	void eliminarPorId(Integer id);
+	
+	//--Va a la Clase ImplVenDaoJdbc para Implementar--//
+	//--El Metodo busPorId enviando Integer id       --//
 	Vendedores buscarPorId(Integer id);
+	
 	List<Vendedores> busAllVen();
+	
+	//--Va a la Clase ImplVenDaoJdbc para Implementar--//
+	//--El Metodo busPorDep enviando un Obj. dep.    --//
+	List<Vendedores> busPorDep(Departamento dep);
 
 }
