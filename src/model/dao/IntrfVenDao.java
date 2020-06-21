@@ -15,7 +15,9 @@ public interface IntrfVenDao {
 	//--Va a la Clase ImplVenDaoJdbc para Implementar--//
 	//--El Metodo busPorId enviando Integer id       --//
 	Vendedores buscarPorId(Integer id);
-	
+
+	//--Va a la Clase ImplVenDaoJdbc para Implementar--//
+	//--El Metodo busAllVen()                        --//
 	List<Vendedores> busAllVen();
 	
 	//--Va a la Clase ImplVenDaoJdbc para Implementar--//

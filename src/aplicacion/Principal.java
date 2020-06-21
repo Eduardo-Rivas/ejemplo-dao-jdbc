@@ -34,6 +34,17 @@ public class Principal {
 	   for(Vendedores xobj : lista) {
           System.out.println(xobj);	    
        }
+       System.out.println();
+       
+       System.out.println("=== Prueba Nro. 3 interfvendao.busAllVen() ===");
+       //--Pasa a interfvendao.busAllVen() Todos los Vendedores--//
+       lista = interfvendao.busAllVen();
+	   System.out.println("Cod.      Nombre       Email Fec. Nacimto   Salario Base   Nro. Dpto    Departamento");
+	   System.out.println("----  --------------  ------  -----------  -------------   ---------  --------------");
+	   for(Vendedores xobj : lista) {
+          System.out.println(xobj);	    
+       }
+       System.out.println();
        
  
 	}

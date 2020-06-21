@@ -40,10 +40,10 @@ public class ImplVenDaoJdbc implements IntrfVenDao {
 	public void eliminarPorId(Integer id) {
 		// TODO Auto-generated method stub
 
-	} 
+	}
 
-	//--Sobre Escribimos el Metodo buscarPorId--//
-	//--Recibiendo un Integer id              --//
+	// --Sobre Escribimos el Metodo buscarPorId--//
+	// --Recibiendo un Integer id --//
 	@Override
 	public Vendedores buscarPorId(Integer id) {
 		PreparedStatement st = null;
@@ -57,15 +57,15 @@ public class ImplVenDaoJdbc implements IntrfVenDao {
 
 			rs = st.executeQuery();
 			if (rs.next()) {// --Hay Datos--//
-				//--Llamada al Metodo instanciacionDpto--//
+				// --Llamada al Metodo instanciacionDpto--//
 				Departamento dep = instanciacionDpto(rs);
 
-				//--Llamada al Metodo instanciacionVen--//
+				// --Llamada al Metodo instanciacionVen--//
 				Vendedores ven = instanciacionVen(rs, dep);
 
-				//--Asignamos el Obj. Relacionado--//
+				// --Asignamos el Obj. Relacionado--//
 				ven.setDepart(dep);
-				
+
 				// --Retornamos el Obj. Vendedor--//
 				return ven;
 			}
@@ -74,70 +74,106 @@ public class ImplVenDaoJdbc implements IntrfVenDao {
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
 		} finally {
-			Conexion.cierraStatement(st);  
+			Conexion.cierraStatement(st);
 			Conexion.cierraResultSet(rs);
 		}
-	} 
-
-	@Override
-	public List<Vendedores> busAllVen() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
-	//--Sobre Escribimos el Metodo busPorDep()--//
-	//--Recibiendo un Objeto Departamento     --//
+	// --Sobre Escribimos el Metodo busAllVen()--//
+	@Override
+	public List<Vendedores> busAllVen() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = conn.prepareStatement("SELECT vendedor.*, departamento.Nombre AS DepNombre "
+					+ "FROM vendedor INNER JOIN departamento " 
+					+ "ON vendedor.DepartamentoId = departamento.Id "
+					+ "ORDER BY Nombre");
+
+			// --Ejecutamos la Consulta--//
+			rs = st.executeQuery();
+
+			// --Crea una Lista Vacia--//
+			List<Vendedores> lista = new ArrayList<>();
+			// --Crea un Map Vacio--//
+			Map<Integer, Departamento> map = new HashMap<>();
+			while (rs.next()) {
+				// --Busca en el mep eñ Id para Tomar el Valor--//
+				Departamento valDep = map.get(rs.getInt("DepartamentoId"));
+
+				// --No Existe Instancia Depto y Agreha al mep--//
+				if (valDep == null) {
+					// --Llamada al Metodo instanciacionDpto--//
+					valDep = instanciacionDpto(rs);
+
+					// --Agregamos al mep--//
+					map.put(rs.getInt("DepartamentoId"), valDep);
+				}
+
+				// --Llamada al Metodo instanciacionVen--//
+				Vendedores ven = instanciacionVen(rs, valDep);
+				// --Agregamos a la Lista--//
+				lista.add(ven);
+
+			}
+			return lista;
+
+		} catch (SQLException e) {
+			throw new DbIntegridadException(e.getMessage());
+		}
+
+	}//--Fin del Metodo busAllVen()--//
+
+	// --Sobre Escribimos el Metodo busPorDep()--//
+	// --Recibiendo un Objeto Departamento --//
 	@Override
 	public List<Vendedores> busPorDep(Departamento departamento) {
-       PreparedStatement st = null;
-       ResultSet rs = null;
-        
-       try {
-          st = conn.prepareStatement(
-        	   "SELECT vendedor.*, departamento.Nombre AS DepNombre "
-        	  +"FROM vendedor INNER JOIN departamento "
-        	  +"ON vendedor.DepartamentoId = departamento.Id "
-        	  +"WHERE vendedor.DepartamentoId = ? "
-        	  +"ORDER BY Nombre"); 
-          
-          //--Asignamos Valor de Vuqueda--//
-          st.setInt(1, departamento.getId());
-          
-          //--Ejecutamos la Consulta--//
-          rs = st.executeQuery();
-          
-          //--Crea una Lista Vacia--//
-          List<Vendedores> lista = new ArrayList<>();
-          //--Crea un Map Vacio--//
-          Map<Integer, Departamento> map = new HashMap<>();
-	      while(rs.next()) {
-	    	 //--Busca en el mep eñ Id para Tomar el Valor--// 
-	    	 Departamento valDep = map.get(rs.getInt("DepartamentoId")); 
-	    	 
-	    	 //--No Existe Instancia Depto y Agreha al mep--//
-	    	 if(valDep == null) {
-			     //--Llamada al Metodo instanciacionDpto--//
-	    		 valDep = instanciacionDpto(rs);
-	    		 
-	    		 //--Agregamos al mep--//
-	    		 map.put(rs.getInt("DepartamentoId"), valDep);
-	    	 }
+		PreparedStatement st = null;
+		ResultSet rs = null;
 
-			 //--Llamada al Metodo instanciacionVen--//
-			 Vendedores ven = instanciacionVen(rs, valDep);
-             //--Agregamos a la Lista--//
-			 lista.add(ven);
-			
-	      }
-	      return lista;
-      
-	   }  
-       catch(SQLException e) {
-          throw new DbIntegridadException(e.getMessage());
-	   }
-	}//--Fin del Metodo busPorDep()--//
+		try {
+			st = conn.prepareStatement("SELECT vendedor.*, departamento.Nombre AS DepNombre "
+					+ "FROM vendedor INNER JOIN departamento " + "ON vendedor.DepartamentoId = departamento.Id "
+					+ "WHERE vendedor.DepartamentoId = ? " + "ORDER BY Nombre");
 
-	//--Metodo Para Instanciar Vendedores--//
+			// --Asignamos Valor de Vuqueda--//
+			st.setInt(1, departamento.getId());
+
+			// --Ejecutamos la Consulta--//
+			rs = st.executeQuery();
+
+			// --Crea una Lista Vacia--//
+			List<Vendedores> lista = new ArrayList<>();
+			// --Crea un Map Vacio--//
+			Map<Integer, Departamento> map = new HashMap<>();
+			while (rs.next()) {
+				// --Busca en el mep eñ Id para Tomar el Valor--//
+				Departamento valDep = map.get(rs.getInt("DepartamentoId"));
+
+				// --No Existe Instancia Depto y Agreha al mep--//
+				if (valDep == null) {
+					// --Llamada al Metodo instanciacionDpto--//
+					valDep = instanciacionDpto(rs);
+
+					// --Agregamos al mep--//
+					map.put(rs.getInt("DepartamentoId"), valDep);
+				}
+
+				// --Llamada al Metodo instanciacionVen--//
+				Vendedores ven = instanciacionVen(rs, valDep);
+				// --Agregamos a la Lista--//
+				lista.add(ven);
+
+			}
+			return lista;
+
+		} catch (SQLException e) {
+			throw new DbIntegridadException(e.getMessage());
+		}
+	}// --Fin del Metodo busPorDep()--//
+
+	// --Metodo Para Instanciar Vendedores--//
 	private Vendedores instanciacionVen(ResultSet rs, Departamento dep) throws SQLException {
 		Vendedores ven = new Vendedores();
 		ven.setId(rs.getInt("Id"));
@@ -149,7 +185,7 @@ public class ImplVenDaoJdbc implements IntrfVenDao {
 		return ven;
 	}
 
-	//--Metodo para Instanciar el Departamento--//
+	// --Metodo para Instanciar el Departamento--//
 	private Departamento instanciacionDpto(ResultSet rs) throws SQLException {
 		Departamento dep = new Departamento();
 		dep.setNro(rs.getInt("DepartamentoId"));
