@@ -67,10 +67,34 @@ public class ImplVenDaoJdbc implements IntrfVenDao {
 	}//--Fin del Metodo Incluir--//
 
 	@Override
-	public void midificar(Vendedores obj) {
-		// TODO Auto-generated method stub
-
-	}
+	public void midificar(Vendedores ven) {
+	       PreparedStatement st = null;
+	       
+	       try { 
+	    	   st = conn.prepareStatement("UPDATE vendedor "
+	    			                     +"SET Nombre=?, "
+	    			                     +"Email=?, "
+	    			                     +"Fecha=?, "
+	    			                     +"SalarioBase=?, "
+	    			                     +"DepartamentoId=? "
+	    			                     +"WHERE Id =?"); 
+	    	   
+	    	   st.setString(1, ven.getNombre());
+	    	   st.setString(2, ven.getEmail());
+	    	   st.setDate(3, new java.sql.Date(ven.getFecha().getTime()));
+	    	   st.setDouble(4, ven.getSalarioBase());
+	    	   st.setInt(5, ven.getDepartamento().getId());
+	    	   st.setInt(6, ven.getId());
+	    	   
+	    	   st.executeUpdate();
+		   } 
+	       catch (SQLException e) {
+	          throw new DbException(e.getMessage());
+		   } 
+	       finally {
+	          Conexion.cierraStatement(st);	   
+	       }
+	}//--Fin de Modificar--//
 
 	@Override
 	public void eliminarPorId(Integer id) {

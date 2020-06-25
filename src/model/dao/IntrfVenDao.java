@@ -7,9 +7,14 @@ import model.entidades.Vendedores;
 
 public interface IntrfVenDao {
 	
-	//--Definimos los Metodos a Sobre Escribir--//
+	//--Va a la Clase ImplVenDaoJdbc para Implementar--//
+	//--El Metodo incluir() enviando obj             --//
 	void incluir(Vendedores obj);
+	
+	
 	void midificar(Vendedores obj);
+	
+	
 	void eliminarPorId(Integer id);
 	
 	//--Va a la Clase ImplVenDaoJdbc para Implementar--//
