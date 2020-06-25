@@ -1,9 +1,11 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,10 +27,44 @@ public class ImplVenDaoJdbc implements IntrfVenDao {
 	}
 
 	@Override
-	public void incluir(Vendedores obj) {
-		// TODO Auto-generated method stub
-
-	}
+	public void incluir(Vendedores ven) {
+       PreparedStatement st = null;
+       
+       try { 
+    	   st = conn.prepareStatement("INSERT INTO vendedor "
+    			                     +"(Nombre,Email,Fecha,"
+    			                     +"SalarioBase,DepartamentoId) "
+    		                         +"VALUES(?,?,?,?,?)",
+    		                         +Statement.RETURN_GENERATED_KEYS); 
+    	   st.setString(1, ven.getNombre());
+    	   st.setString(2, ven.getEmail());
+    	   st.setDate(3, new java.sql.Date(ven.getFecha().getTime()));
+    	   st.setDouble(4, ven.getSalarioBase());
+    	   st.setInt(5, ven.getDepartamento().getId());
+    	   
+    	   int filas = st.executeUpdate();
+    	   //--Si Inserto Filas--//
+    	   if(filas > 0) {
+    		  //--Asigna a rs el Id Generado--// 
+    	      ResultSet rs = st.getGeneratedKeys();
+    	      if(rs.next()) {
+    	         int id = rs.getInt(1);	
+    	         //--Asigna al Obj. id Tomado--//
+    	         ven.setId(id);
+    	      }
+    	      Conexion.cierraResultSet(rs);
+    	   }
+    	   else {//--No Inserto Filas--//
+    	      throw new DbException("Error Inesperado, No Hay Filas Afectadas...");	   
+    	   }
+	   } 
+       catch (SQLException e) {
+          throw new DbException(e.getMessage());
+	   } 
+       finally {
+          Conexion.cierraStatement(st);	   
+       }
+	}//--Fin del Metodo Incluir--//
 
 	@Override
 	public void midificar(Vendedores obj) {
@@ -64,7 +100,7 @@ public class ImplVenDaoJdbc implements IntrfVenDao {
 				Vendedores ven = instanciacionVen(rs, dep);
 
 				// --Asignamos el Obj. Relacionado--//
-				ven.setDepart(dep);
+				ven.setDepartamento(dep);
 
 				// --Retornamos el Obj. Vendedor--//
 				return ven;
@@ -181,7 +217,7 @@ public class ImplVenDaoJdbc implements IntrfVenDao {
 		ven.setEmail(rs.getString("Email"));
 		ven.setFecha(rs.getDate("Fecha"));
 		ven.setSalarioBase(rs.getDouble("SalarioBase"));
-		ven.setDepart(dep);
+		ven.setDepartamento(dep);
 		return ven;
 	}
 

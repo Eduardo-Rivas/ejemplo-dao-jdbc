@@ -46,7 +46,10 @@ public class Principal {
        }
        System.out.println();
        
- 
+       System.out.println("=== Prueba Nro. 4 interfvendao.incluir() ===");
+       Vendedores newVen = new Vendedores(null, "Sheky", "sheky@gmail.com", new Date(), 7000.0, dpto);
+       interfvendao.incluir(newVen);
+       System.out.println("Nuevo Registro Incluido "+newVen.getId());
 	}
 
 }
