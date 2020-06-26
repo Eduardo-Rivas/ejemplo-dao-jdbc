@@ -3,17 +3,18 @@ package aplicacion;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import model.dao.FabricaDao;
 import model.dao.IntrfVenDao;
-import model.dao.impl.ImplVenDaoJdbc;
 import model.entidades.Departamento;
 import model.entidades.Vendedores;
 
 public class Principal {
  
 	public static void main(String[] args) {
-        
+       Scanner sc = new Scanner(System.in); 
+       
        //--Llamamos a la Interfase para Instanciarla (IntrfVenDao) --//
        IntrfVenDao interfvendao = FabricaDao.crearVendedoresDao();
        
@@ -59,7 +60,14 @@ public class Principal {
        interfvendao.midificar(vendedor);
        System.out.println("Registro "+vendedor.getId()+" Actualizado... ");
        System.out.println();
+
+       System.out.println("=== Prueba Nro. 6 interfvendao.eliminarPorId() ===");
+       System.out.println("Entre el Codigo a Eliminar :");
+       int id = sc.nextInt();
+       interfvendao.eliminarPorId(id);
+       System.out.println("Registro Eliminado...");
        
+       sc.close();
 	}
 
 }

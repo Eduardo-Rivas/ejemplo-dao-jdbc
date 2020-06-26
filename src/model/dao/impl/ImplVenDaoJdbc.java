@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import db.Conexion;
+import db.Conexion; 
 import db.DbException;
 import db.DbIntegridadException;
 import model.dao.IntrfVenDao;
@@ -98,9 +98,25 @@ public class ImplVenDaoJdbc implements IntrfVenDao {
 
 	@Override
 	public void eliminarPorId(Integer id) {
-		// TODO Auto-generated method stub
+       PreparedStatement st = null;
+       
+       try {
+	      st = conn.prepareStatement("DELETE FROM vendedor "
+	      		                   + "WHERE Id = ?");
+	      st.setInt(1, id);
+	      int filas = st.executeUpdate();
+	      if(filas == 0) {
+    	      throw new DbException("Registro No Existe...");	   
+	      }
+	   }  
+       catch (SQLException e) {
+          throw new DbException(e.getMessage());
+	   }
+       finally {
+          Conexion.cierraStatement(st);	   
+       }
 
-	}
+	}//--Fin de elimunarPorId--//
 
 	// --Sobre Escribimos el Metodo buscarPorId--//
 	// --Recibiendo un Integer id --//
@@ -129,7 +145,7 @@ public class ImplVenDaoJdbc implements IntrfVenDao {
 				// --Retornamos el Obj. Vendedor--//
 				return ven;
 			}
-			// --No Hay Datos--//
+			// --No Hay Datos--// 
 			return null;
 		} catch (SQLException e) {
 			throw new DbException(e.getMessage());
